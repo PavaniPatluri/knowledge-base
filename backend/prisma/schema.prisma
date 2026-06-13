@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String         @id @default(uuid())
+  slackId        String         @unique
+  email          String?        @unique
+  name           String
+  avatar         String?
+  role           String         @default("EMPLOYEE")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  teamMembers    TeamMember[]
+  documents      Document[]
+  conversations  Conversation[]
+  auditLogs      AuditLog[]
+  comments       Comment[]
+  activities     Activity[]
+}
+
+model Team {
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  members     TeamMember[]
+  documents   Document[]
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  userId    String
+  teamId    String
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  team      Team     @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+model Document {
+  id             String           @id @default(uuid())
+  title          String
+  content        String?
+  url            String?
+  fileKey        String?
+  sourceType     String
+  status         String           @default("PROCESSING")
+  ownerId        String
+  teamId         String?
+  scope          String           @default("PERSONAL")
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  owner          User             @relation(fields: [ownerId], references: [id])
+  team           Team?            @relation(fields: [teamId], references: [id])
+  tags           DocumentTag[]
+  versions       DocumentVersion[]
+  comments       Comment[]
+}
+
+model Tag {
+  id          String         @id @default(uuid())
+  name        String         @unique
+  documents   DocumentTag[]
+}
+
+model DocumentTag {
+  documentId String
+  tagId      String
+  document   Document @relation(fields: [documentId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
+
+  @@id([documentId, tagId])
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  userId    String
+  title     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  role           String
+  content        String
+  sources        String?      // stringified JSON
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  details   String?  // stringified JSON
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model DocumentVersion {
+  id         String   @id @default(uuid())
+  documentId String
+  versionNum Int
+  content    String
+  fileKey    String?
+  createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  documentId String
+  userId     String
+  content    String
+  createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  targetId  String?
+  targetType String?
+  metadata  String?  // stringified JSON
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model SearchEvent {
+  id           String   @id @default(uuid())
+  query        String
+  success      Boolean
+  resultsCount Int      @default(0)
+  createdAt    DateTime @default(now())
+}
