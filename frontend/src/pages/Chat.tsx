@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Send, Bot, User, Loader2, Info, Mic, MicOff, Volume2 } from 'lucide-react';
 import { socket } from '../lib/socket';
+import { API_URL } from '../lib/api';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 
@@ -108,7 +109,7 @@ export const Chat = () => {
       setMessages((prev) => [...prev, userMessage]);
       setIsLoading(true);
 
-      fetch('http://localhost:3000/ai/ask-stream', {
+      fetch(`${API_URL}/ai/ask-stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: initialQuery, clientId: socket.id })
@@ -170,7 +171,7 @@ export const Chat = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/ai/ask-stream', {
+      const res = await fetch(`${API_URL}/ai/ask-stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage.content, clientId: socket.id })

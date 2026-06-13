@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Shield, UserPlus, Settings, MoreVertical, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 
 export const Teams = () => {
   const [teams, setTeams] = useState<any[]>([]);
@@ -21,7 +22,7 @@ export const Teams = () => {
 
   const fetchAllUsers = async () => {
     try {
-      const res = await fetch('http://localhost:3000/users');
+      const res = await fetch(`${API_URL}/users`);
       setAllUsers(await res.json());
     } catch (e) {
       console.error(e);
@@ -30,7 +31,7 @@ export const Teams = () => {
 
   const fetchTeams = async () => {
     try {
-      const res = await fetch('http://localhost:3000/teams');
+      const res = await fetch(`${API_URL}/teams`);
       setTeams(await res.json());
     } catch (e) {
       console.error(e);
@@ -43,7 +44,7 @@ export const Teams = () => {
     const name = prompt('Enter team name:');
     if (!name) return;
     
-    await fetch('http://localhost:3000/teams', {
+    await fetch(`${API_URL}/teams`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name })
@@ -53,14 +54,14 @@ export const Teams = () => {
 
   const handleDeleteTeam = async (id: string) => {
     if (!confirm('Are you sure you want to delete this team?')) return;
-    await fetch(`http://localhost:3000/teams/${id}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/teams/${id}`, { method: 'DELETE' });
     toast.success('Team deleted');
     fetchTeams();
   };
 
   const handleAddMember = async (teamId: string, userId: string) => {
     try {
-      await fetch(`http://localhost:3000/teams/${teamId}/members`, {
+      await fetch(`${API_URL}/teams/${teamId}/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId })

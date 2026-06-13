@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Users, Database, Settings, Activity, AlertTriangle, X, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 
 export const Admin = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -54,7 +55,7 @@ export const Admin = () => {
     
     if (geminiApiKey) {
       try {
-        await fetch('http://localhost:3000/ai/config', {
+        await fetch(`${API_URL}/ai/config`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ apiKey: geminiApiKey })

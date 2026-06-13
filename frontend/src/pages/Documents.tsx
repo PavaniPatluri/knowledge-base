@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UploadCloud, File, Trash2, Search, Filter, History, CheckCircle2, Eye, X } from 'lucide-react';
 import { socket } from '../lib/socket';
+import { API_URL } from '../lib/api';
 import { toast } from 'sonner';
 
 export const Documents = () => {
@@ -49,7 +50,7 @@ export const Documents = () => {
 
   const fetchDocuments = async () => {
     try {
-      const res = await fetch('http://localhost:3000/documents');
+      const res = await fetch(`${API_URL}/documents`);
       setDocuments(await res.json());
     } catch (e) {
       console.error(e);
@@ -60,14 +61,14 @@ export const Documents = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this document?')) return;
-    await fetch(`http://localhost:3000/documents/${id}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/documents/${id}`, { method: 'DELETE' });
     fetchDocuments();
   };
 
   const loadVersionHistory = async (doc: any) => {
     setVersionHistoryDoc(doc);
     try {
-      const res = await fetch(`http://localhost:3000/documents/${doc.id}/versions`);
+      const res = await fetch(`${API_URL}/documents/${doc.id}/versions`);
       setVersions(await res.json());
     } catch (e) {
       console.error(e);
@@ -77,7 +78,7 @@ export const Documents = () => {
 
   const handleViewDocument = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:3000/documents/${id}`);
+      const res = await fetch(`${API_URL}/documents/${id}`);
       if (!res.ok) throw new Error('Failed to fetch document');
       const data = await res.json();
       setViewingDoc(data);
@@ -121,7 +122,7 @@ export const Documents = () => {
     formData.append('ownerId', '1'); 
 
     try {
-      const res = await fetch('http://localhost:3000/documents/upload', {
+      const res = await fetch(`${API_URL}/documents/upload`, {
         method: 'POST',
         body: formData,
       });
