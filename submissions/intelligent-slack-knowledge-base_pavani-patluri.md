@@ -68,7 +68,8 @@ While the knowledge base and AI standalone chat work flawlessly, the direct inte
 
 ## Screenshots or Demo
 
-**Deployed Link:** [Insert Vercel/Render Link if deployed]
+**Deployed Link:** https://vercel.com/pavanipatluris-projects/knowledge-base
+**Backend API:** https://knowledge-base-fl56.onrender.com
 **Demo Video Link:** [Insert YouTube/Loom Link]
 **Screenshots:** [Insert Screenshot Links from your repo]
 

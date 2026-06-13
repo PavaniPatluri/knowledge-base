@@ -3,7 +3,8 @@
 > **An intelligent, AI-powered organizational knowledge hub** built with a conversational Gemini 2.5 Flash AI Copilot, real-time document processing, and a stunning premium glassmorphism UI.
 
 [![GitHub](https://img.shields.io/badge/GitHub-PavaniPatluri-black?logo=github)](https://github.com/PavaniPatluri/knowledge-base)
-[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://vercel.com/pavanipatluris-projects/knowledge-base)
+[![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)](https://vercel.com/pavanipatluris-projects/knowledge-base)
+[![Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render)](https://knowledge-base-fl56.onrender.com)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev/)
 [![NestJS](https://img.shields.io/badge/NestJS-Backend-E0234E?logo=nestjs)](https://nestjs.com/)
 [![Gemini](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-4285F4?logo=google)](https://ai.google.dev/)
@@ -38,11 +39,11 @@ Built for enterprise teams, this platform centralizes documentation, surfaces kn
 
 **Backend:** Node.js, NestJS, Prisma ORM, Socket.IO, Multer
 
-**Database:** SQLite (via Prisma, production-ready to swap to PostgreSQL)
+**Database:** SQLite (via Prisma)
 
 **AI & ML:** Google Gemini 2.5 Flash API, LangChain, Vector Store (RAG Pipeline)
 
-**Deployment:** Vercel (Frontend), GitHub Actions ready
+**Deployment:** Vercel (Frontend) + Render (Backend)
 
 ---
 
